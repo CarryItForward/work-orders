@@ -42,7 +42,26 @@ const useStyles = makeStyles((theme) => ({
     workOrdersContainer: {
         display: 'block',
         textAlign: 'center',
-        marginTop: theme.spacing(2)
+        margin: 'auto',
+        marginTop: theme.spacing(2),
+    },
+    workOrder: {
+        width: '75%',
+        height: '10vh',
+        margin: '0 auto',
+        cursor: 'pointer'
+    },
+    workOrderGrid: {
+        height: '100%',
+        padding: 10
+    },
+    orderName: {
+        textAlign: 'left'
+    },
+    statusText: {
+        //  font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [minimum viewport width]) / ([maximum viewport width] - [minimum viewport width])));
+        fontSize: 'calc(10px + (16 - 10) * ((100vw - 300px) / (1600 - 300)))',
+        lineHeight: 'calc(1.3em + (1.5 - 1.2) * ((100vw - 300px)/(1600 - 300)))'
     }
 }));
 
@@ -76,10 +95,83 @@ export default function Person(props) {
                         </form>
                     </Paper>
                 </Grid>
-                <Grid className={classes.workOrdersContainer} item xs={12} sm={12} md={8}>
-                    <Typography variant='h3'><b>Work Orders</b></Typography>
+                <Grid container className={classes.workOrdersContainer} xs={12} sm={12} md={8} alignItems='column'
+                      spacing={2}>
+                    <Grid xs={12} item>
+                        <Typography variant='h3'><b>Work Orders</b></Typography>
+                    </Grid>
+                    <Grid xs={12} item>
+                        <WorkOrderCard name='Sleeping Bag' itemStatus='Delivered' orderStatus='Completed'/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <WorkOrderCard name='Socks' itemStatus='Ordered' orderStatus='In Progress'/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <WorkOrderCard name='Heated Blanket' itemStatus='Delivered' orderStatus='In Progress'/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <WorkOrderCard name='Socks' itemStatus='Need Purchase' orderStatus='In Progress'/>
+                    </Grid>
                 </Grid>
             </Grid>
         </div>
     )
+}
+
+function WorkOrderCard(props) {
+    const classes = useStyles()
+
+    return (
+        <Paper className={classes.workOrder} onClick={() => alert('hello')}>
+            <Grid container className={classes.workOrderGrid} alignItems='row' alignItems='center'
+                  zeroMinWidth>
+                <Grid item xs={6}>
+                    <Typography className={classes.orderName} noWrap>{props.name}</Typography>
+                </Grid>
+                <Grid style={applyStatusColor(props.itemStatus)} item xs={2}>
+                    <Typography className={classes.statusText}>{props.itemStatus}</Typography>
+                </Grid>
+                <Grid item xs={1}>
+                </Grid>
+                <Grid style={applyStatusColor(props.orderStatus)} item xs={3}>
+                    <Typography className={classes.statusText}>{props.orderStatus}</Typography>
+                </Grid>
+            </Grid>
+        </Paper>
+    )
+}
+
+// Palette: https://coolors.co/f94144-f3722c-f8961e-f9c74f-90be6d-43aa8b-577590
+function applyStatusColor(statusText) {
+    var hexCode = 'black'
+    switch (statusText) {
+        case 'Pending':
+            hexCode = '#f94144'
+            break
+        case 'Need Purchase':
+            hexCode = '#f3722c'
+            break
+        case 'In Progress':
+            hexCode = '#f3722c'
+            break
+        case 'Ordered':
+            hexCode = '#f8961e'
+            break
+        case 'Acquired':
+            hexCode = '#f9c74f'
+        case 'Delivered':
+            hexCode = '#90be6d'
+            break
+        case 'Completed':
+            hexCode = '#90be6d'
+            break
+    }
+    return {
+        height: '75%',
+        borderRadius: 5,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: hexCode
+    }
 }
