@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -11,16 +11,14 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import Drawer from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
-import Divider from '@material-ui/core/Divider'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import InboxIcon from '@material-ui/icons/MoveToInbox'
-import MailIcon from '@material-ui/icons/Mail'
+
+import HomeIcon from '@material-ui/icons/Home'
+import InfoIcon from '@material-ui/icons/Info'
 
 import * as firebase from 'firebase'
-
-const drawerWidth = 256
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,11 +34,10 @@ const useStyles = makeStyles((theme) => ({
     zIndex: theme.zIndex.drawer + 1,
   },
   drawer: {
-    width: drawerWidth,
     flexShrink: 0,
   },
   drawerPaper: {
-    width: drawerWidth,
+    ...theme.drawer,
   },
   drawerContainer: {
     overflow: 'auto',
@@ -51,7 +48,7 @@ export default function ButtonAppBar() {
   const classes = useStyles()
   const router = useRouter()
 
-  const open = useSelector(state => state.drawerOpen)
+  const open = useSelector((state) => state.drawerOpen)
 
   const dispatch = useDispatch()
 
@@ -69,14 +66,14 @@ export default function ButtonAppBar() {
   const paths = [
     {
       title: 'Home',
-      icon: <InboxIcon />,
+      icon: <HomeIcon />,
       onClick: () => router.push('/'),
     },
     {
       title: 'About',
-      icon: <InboxIcon />,
+      icon: <InfoIcon />,
       onClick: () => router.push('/about'),
-    }
+    },
   ]
 
   return (

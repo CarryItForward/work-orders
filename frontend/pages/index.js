@@ -1,6 +1,5 @@
 import React from 'react'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
@@ -13,11 +12,13 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  text: {
+    textAlign: 'center',
+  },
 }))
 
 export default function Home() {
   const classes = useStyles()
-  const router = useRouter()
 
   return (
     <>
@@ -27,9 +28,21 @@ export default function Home() {
       </Head>
 
       <Grid container component="main" className={classes.root}>
-        <Typography component="h1" variant="h1">
-          Welcome
-        </Typography>
+        <Grid item xs={4} className={classes.text}>
+          <Typography component="h1" variant="h1">
+            Hello
+          </Typography>
+        </Grid>
+        <Grid item xs={4} className={classes.text}>
+          <Typography component="h1" variant="h1">
+            Bonjour
+          </Typography>
+        </Grid>
+        <Grid item xs={4} className={classes.text}>
+          <Typography component="h1" variant="h1">
+            Hola
+          </Typography>
+        </Grid>
       </Grid>
     </>
   )
