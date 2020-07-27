@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { grey } from '@material-ui/core/colors';
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { grey } from '@material-ui/core/colors'
 
-import Transition from 'react-transition-group/Transition';
+import Transition from 'react-transition-group/Transition'
 
 const defaultStyle = ({ duration }) => ({
   height: '100vh',
@@ -13,7 +13,7 @@ const defaultStyle = ({ duration }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  zIndex: 99,
+  zIndex: 9999,
   background: grey[900],
   transition: `opacity ${duration}ms ease-in-out`,
   opacity: 0,
@@ -21,18 +21,20 @@ const defaultStyle = ({ duration }) => ({
 
 const transitionStyles = {
   entering: { opacity: 0, display: 'none' },
-  entered: { opacity: 1 , display: 'flex'},
-  exited: { opacity: 0, display: 'none'},
-};
+  entered: { opacity: 1, display: 'flex' },
+  exited: { opacity: 0, display: 'none' },
+}
 
 export default function Loading({ loading, duration }) {
   return (
     <Transition in={loading} timeout={duration}>
       {(state) => (
-        <div style={{
-          ...defaultStyle({ duration }),
-          ...transitionStyles[state]
-        }}>
+        <div
+          style={{
+            ...defaultStyle({ duration }),
+            ...transitionStyles[state],
+          }}
+        >
           <CircularProgress />
         </div>
       )}

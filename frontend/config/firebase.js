@@ -6,5 +6,5 @@ export const config = {
   storageBucket: 'cif-work-orders.appspot.com',
   messagingSenderId: '548729800433',
   appId: '1:548729800433:web:980bacb93fc068c2d60b50',
-  measurementId: 'G-FZ201XJ8B8'
-};
+  measurementId: 'G-FZ201XJ8B8',
+}

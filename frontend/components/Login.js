@@ -1,30 +1,25 @@
-import React, { useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react'
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import TextField from '@material-ui/core/TextField'
+import Link from '@material-ui/core/Link'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import Typography from '@material-ui/core/Typography'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { makeStyles } from '@material-ui/core/styles'
 
-import {
-  useHistory
-} from "react-router-dom";
-
-import * as firebase from 'firebase/app';
+import * as firebase from 'firebase/app'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
   },
   image: {
-    backgroundImage: 'url(https://www.lohrrealestate.com/wp-content/uploads/2018/08/view-from-skinner-s-butte-eugene.png)',
+    backgroundImage:
+      'url(https://www.lohrrealestate.com/wp-content/uploads/2018/08/view-from-skinner-s-butte-eugene.png)',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -56,26 +51,25 @@ const useStyles = makeStyles((theme) => ({
     marginTop: -8,
     marginLeft: -12,
   },
-}));
+}))
 
 export default function Authentication() {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [working, setWorking] = useState(false)
-
-  const history = useHistory()
 
   const signIn = (e) => {
     e.preventDefault()
 
     setWorking(true)
 
-    firebase.auth().signInWithEmailAndPassword(email, password)
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
       .then(() => {
         setWorking(false)
-        history.push('/')
       })
       .catch(() => {
         setWorking(false)
@@ -106,7 +100,7 @@ export default function Authentication() {
               autoComplete="email"
               autoFocus
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -119,11 +113,7 @@ export default function Authentication() {
               id="password"
               autoComplete="current-password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              onChange={(e) => setPassword(e.target.value)}
             />
             <div className={classes.buttonWrapper}>
               <Button
@@ -149,5 +139,5 @@ export default function Authentication() {
         </div>
       </Grid>
     </Grid>
-  );
+  )
 }
