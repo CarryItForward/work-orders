@@ -14,7 +14,7 @@ import RequireAuth from '../components/RequireAuth'
 
 import { wrapper } from '../store'
 
-function App({ Component, pageProps }) {
+function CustomApp({ Component, pageProps }) {
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -34,6 +34,15 @@ function App({ Component, pageProps }) {
     })
   }, [])
 
+  useEffect(() => {
+    if (window.innerWidth >= theme.breakpoints.width('sm')) {
+      dispatch({
+        type: '@drawer/SET_OPEN',
+        payload: true,
+      })
+    }
+  }, [])
+
   return (
     <>
       <Head>
@@ -51,9 +60,9 @@ function App({ Component, pageProps }) {
   )
 }
 
-App.propTypes = {
+CustomApp.propTypes = {
   Component: PropTypes.elementType.isRequired,
   pageProps: PropTypes.object.isRequired,
 }
 
-export default wrapper.withRedux(App)
+export default wrapper.withRedux(CustomApp)

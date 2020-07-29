@@ -28,17 +28,17 @@ export default function Home() {
       </Head>
 
       <Grid container component="main" className={classes.root}>
-        <Grid item xs={4} className={classes.text}>
+        <Grid item sm={12} md={4} className={classes.text}>
           <Typography component="h1" variant="h1">
             Hello
           </Typography>
         </Grid>
-        <Grid item xs={4} className={classes.text}>
+        <Grid item sm={12} md={4} className={classes.text}>
           <Typography component="h1" variant="h1">
             Bonjour
           </Typography>
         </Grid>
-        <Grid item xs={4} className={classes.text}>
+        <Grid item sm={12} md={4} className={classes.text}>
           <Typography component="h1" variant="h1">
             Hola
           </Typography>

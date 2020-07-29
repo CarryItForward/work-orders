@@ -1,4 +1,3 @@
-import { AnyAction } from 'redux'
 import { HYDRATE } from 'next-redux-wrapper'
 
 const initialState = {
@@ -8,7 +7,7 @@ const initialState = {
   loading: true,
   user: null,
 
-  drawerOpen: true,
+  drawerOpen: false,
 }
 
 export const reducer = (state = initialState, action) => {

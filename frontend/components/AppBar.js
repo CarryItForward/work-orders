@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function ButtonAppBar() {
+export default function ButtonAppBar({ raisedDrawer }) {
   const classes = useStyles()
   const router = useRouter()
 
@@ -100,17 +100,22 @@ export default function ButtonAppBar() {
 
       <Drawer
         className={classes.drawer}
-        variant="persistent"
+        variant={raisedDrawer ? 'temporary' : 'persistent'}
         open={open}
+        onClose={toggleDrawer}
         classes={{
           paper: classes.drawerPaper,
         }}
       >
-        <Toolbar />
+        <Toolbar>
+          <Typography variant="h6" className={classes.title}>
+            Lifeline
+          </Typography>
+        </Toolbar>
         <div className={classes.drawerContainer}>
           <List>
             {paths.map((item, index) => (
-              <ListItem button key={item.title} onClick={item.onClick}>
+              <ListItem button key={item.title} onClick={() => item.onClick() && (raisedDrawer && toggleDrawer())}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.title} />
               </ListItem>

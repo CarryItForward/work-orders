@@ -17,7 +17,7 @@ const theme = createMuiTheme({
   drawer: {
     width: 256,
     [breakpoints.down('xs')]: {
-      width: '80vw',
+      width: '75vw',
     },
   },
 })
