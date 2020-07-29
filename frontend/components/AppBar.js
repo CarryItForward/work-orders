@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import Drawer from '@material-ui/core/Drawer'
@@ -14,9 +13,11 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
+import Divider from '@material-ui/core/Divider'
 
 import HomeIcon from '@material-ui/icons/Home'
 import InfoIcon from '@material-ui/icons/Info'
+import LogoutIcon from '../assets/logout.svg'
 
 import * as firebase from 'firebase'
 
@@ -52,10 +53,6 @@ export default function ButtonAppBar({ raisedDrawer }) {
 
   const dispatch = useDispatch()
 
-  const signOut = () => {
-    firebase.auth().signOut()
-  }
-
   const toggleDrawer = () => {
     dispatch({
       type: '@drawer/SET_OPEN',
@@ -63,17 +60,26 @@ export default function ButtonAppBar({ raisedDrawer }) {
     })
   }
 
-  const paths = [
-    {
-      title: 'Home',
-      icon: <HomeIcon />,
-      onClick: () => router.push('/'),
-    },
-    {
-      title: 'About',
-      icon: <InfoIcon />,
-      onClick: () => router.push('/about'),
-    },
+  const sections = [
+    [
+      {
+        title: 'Home',
+        icon: <HomeIcon />,
+        onClick: () => router.push('/'),
+      },
+      {
+        title: 'About',
+        icon: <InfoIcon />,
+        onClick: () => router.push('/about'),
+      },
+    ],
+    [
+      {
+        title: 'Logout',
+        icon: <LogoutIcon />,
+        onClick: () => firebase.auth().signOut(),
+      },
+    ],
   ]
 
   return (
@@ -92,9 +98,6 @@ export default function ButtonAppBar({ raisedDrawer }) {
           <Typography variant="h6" className={classes.title}>
             Lifeline
           </Typography>
-          <Button color="inherit" onClick={signOut}>
-            Logout
-          </Button>
         </Toolbar>
       </AppBar>
 
@@ -113,14 +116,19 @@ export default function ButtonAppBar({ raisedDrawer }) {
           </Typography>
         </Toolbar>
         <div className={classes.drawerContainer}>
-          <List>
-            {paths.map((item, index) => (
-              <ListItem button key={item.title} onClick={() => item.onClick() && (raisedDrawer && toggleDrawer())}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.title} />
-              </ListItem>
-            ))}
-          </List>
+          {sections.map((paths, index) => (
+            <React.Fragment key={index}>
+              <Divider />
+              <List>
+                {paths.map(item => (
+                  <ListItem button key={item.title} onClick={() => item.onClick() && (raisedDrawer && toggleDrawer())}>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.title} />
+                  </ListItem>
+                ))}
+              </List>
+            </React.Fragment>
+          ))}
         </div>
       </Drawer>
     </div>
