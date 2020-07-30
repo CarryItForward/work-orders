@@ -1,4 +1,5 @@
 const withPWA = require('next-pwa')
+const path = require('path')
 
 module.exports = withPWA({
   webpack(config, options) {
@@ -15,6 +16,8 @@ module.exports = withPWA({
       test: /\.svg$/,
       use: ['@svgr/webpack'],
     })
+
+    config.resolve.alias['~'] = path.resolve(__dirname)
 
     return config
   },

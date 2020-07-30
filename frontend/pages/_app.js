@@ -4,15 +4,16 @@ import Head from 'next/head'
 import { useDispatch } from 'react-redux'
 import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import theme from '../config/theme'
 
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import { FirebaseAuthProvider } from '@react-firebase/auth'
-import { config } from '../config/firebase'
-import RequireAuth from '../components/RequireAuth'
 
-import { wrapper } from '../store'
+import RequireAuth from '~/components/RequireAuth'
+
+import theme from '~/config/theme'
+import { config } from '~/config/firebase'
+import { wrapper } from '~/store'
 
 function CustomApp({ Component, pageProps }) {
   const dispatch = useDispatch()

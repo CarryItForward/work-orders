@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux'
 import { useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
-import AppBar from './AppBar'
-import LoadingOverlay from './LoadingOverlay'
-import Login from './Login'
+import AppBar from '~/components/AppBar'
+import LoadingOverlay from '~/components/LoadingOverlay'
+import Login from '~/components/Login'
 
 export default function RequireAuth({ component }) {
   const user = useSelector((state) => state.user)

@@ -17,7 +17,7 @@ import Divider from '@material-ui/core/Divider'
 
 import HomeIcon from '@material-ui/icons/Home'
 import InfoIcon from '@material-ui/icons/Info'
-import LogoutIcon from '../assets/logout.svg'
+import LogoutIcon from '~/assets/logout.svg'
 
 import * as firebase from 'firebase'
 
