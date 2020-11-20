@@ -9,7 +9,7 @@ import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import { FirebaseAuthProvider } from '@react-firebase/auth'
 
-import RequireAuth from '~/components/RequireAuth'
+import PageWrapper from '~/components/PageWrapper'
 
 import theme from '~/config/theme'
 import { config } from '~/config/firebase'
@@ -54,7 +54,7 @@ function CustomApp({ Component, pageProps }) {
       <FirebaseAuthProvider {...config} firebase={firebase}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <RequireAuth component={<Component {...pageProps} />} />
+          <PageWrapper component={<Component {...pageProps} />} />
         </ThemeProvider>
       </FirebaseAuthProvider>
     </>
