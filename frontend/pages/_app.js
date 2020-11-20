@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
-import Head from 'next/head'
-import { useDispatch } from 'react-redux'
-import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
-
-import * as firebase from 'firebase/app'
-import 'firebase/auth'
+import { ThemeProvider } from '@material-ui/core/styles'
 import { FirebaseAuthProvider } from '@react-firebase/auth'
-
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import Head from 'next/head'
+import PropTypes from 'prop-types'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import PageWrapper from '~/components/PageWrapper'
-
-import theme from '~/config/theme'
 import { config } from '~/config/firebase'
+import theme from '~/config/theme'
 import { wrapper } from '~/store'
+
+
+
 
 function CustomApp({ Component, pageProps }) {
   const dispatch = useDispatch()

@@ -1,25 +1,26 @@
-import React from 'react'
-import { useRouter } from 'next/router'
-import { useDispatch, useSelector } from 'react-redux'
-
-import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
+import Divider from '@material-ui/core/Divider'
 import Drawer from '@material-ui/core/Drawer'
+import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import Divider from '@material-ui/core/Divider'
-
+import { makeStyles } from '@material-ui/core/styles'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
 import HomeIcon from '@material-ui/icons/Home'
 import InfoIcon from '@material-ui/icons/Info'
+import MenuIcon from '@material-ui/icons/Menu'
+import firebase from 'firebase/app'
+import "firebase/auth"
+import { useRouter } from 'next/router'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import LogoutIcon from '~/assets/logout.svg'
 
-import * as firebase from 'firebase'
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
