@@ -12,15 +12,13 @@ import Typography from '@material-ui/core/Typography'
 import HomeIcon from '@material-ui/icons/Home'
 import InfoIcon from '@material-ui/icons/Info'
 import MenuIcon from '@material-ui/icons/Menu'
+import PeopleIcon from '@material-ui/icons/People'
 import firebase from 'firebase/app'
-import "firebase/auth"
+import 'firebase/auth'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import LogoutIcon from '~/assets/logout.svg'
-
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,6 +71,11 @@ export default function ButtonAppBar({ raisedDrawer }) {
         icon: <InfoIcon />,
         onClick: () => router.push('/about'),
       },
+      {
+        title: 'People',
+        icon: <PeopleIcon />,
+        onClick: () => router.push('/people'),
+      },
     ],
     [
       {
@@ -121,8 +124,12 @@ export default function ButtonAppBar({ raisedDrawer }) {
             <React.Fragment key={index}>
               <Divider />
               <List>
-                {paths.map(item => (
-                  <ListItem button key={item.title} onClick={() => item.onClick() && (raisedDrawer && toggleDrawer())}>
+                {paths.map((item) => (
+                  <ListItem
+                    button
+                    key={item.title}
+                    onClick={() => item.onClick() && raisedDrawer && toggleDrawer()}
+                  >
                     <ListItemIcon>{item.icon}</ListItemIcon>
                     <ListItemText primary={item.title} />
                   </ListItem>
