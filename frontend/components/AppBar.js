@@ -13,6 +13,7 @@ import HomeIcon from '@material-ui/icons/Home'
 import InfoIcon from '@material-ui/icons/Info'
 import MenuIcon from '@material-ui/icons/Menu'
 import PeopleIcon from '@material-ui/icons/People'
+import WorkOrdersIcon from '@material-ui/icons/Work'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import { useRouter } from 'next/router'
@@ -75,6 +76,11 @@ export default function ButtonAppBar({ raisedDrawer }) {
         title: 'People',
         icon: <PeopleIcon />,
         onClick: () => router.push('/people'),
+      },
+      {
+        title: 'Work Orders',
+        icon: <WorkOrdersIcon />,
+        onClick: () => router.push('/orders'),
       },
     ],
     [

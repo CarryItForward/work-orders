@@ -1,7 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import { Person, Item } from '../types/types'
-
+import { Item, Person, WorkOrder } from '../types/types'
 export const db = {
   /** People */
   peopleCollection: () => {
@@ -11,12 +10,11 @@ export const db = {
       .withConverter({
         fromFirestore: (snapshot, options): Person => {
           const data = snapshot.data(options)
-          const person: Person = {
+          return {
             name: data.name,
             phoneNumber: data['phone_number'],
             id: snapshot.id,
           }
-          return person
         },
         toFirestore: (person: Person) => ({
           name: person.name,
@@ -24,6 +22,35 @@ export const db = {
         }),
       })
   },
+  /** Work Orders */
+  workOrdersCollection: () => {
+    return firebase
+      .firestore()
+      .collection('work_orders')
+      .withConverter({
+        fromFirestore: (snapshot, options): WorkOrder => {
+          const data = snapshot.data(options)
+          return {
+            id: snapshot.id,
+            created: data.created,
+            location: data.location,
+            status: data.status,
+            notes: data.notes,
+            person: data.person,
+            items: data.items,
+          }
+        },
+        toFirestore: (workOrder: WorkOrder) => ({
+          created: workOrder.created,
+          location: workOrder.location,
+          status: workOrder.status,
+          notes: workOrder.notes,
+          person: workOrder.person,
+          items: workOrder.items,
+        }),
+      })
+  },
+  /** Items */
   itemsCollection: () => {
     return firebase
       .firestore()
@@ -31,15 +58,18 @@ export const db = {
       .withConverter({
         fromFirestore: (snapshot, options): Item => {
           const data = snapshot.data(options)
-          const item: Item = {
+          return {
+            id: snapshot.id,
+            cost: data.cost,
             name: data.name,
-            id: snapshot.id
+            image: data.image,
           }
-          return item
         },
         toFirestore: (item: Item) => ({
+          cost: item.cost,
           name: item.name,
-        })
+          image: item.image,
+        }),
       })
   },
 }

@@ -8,8 +8,10 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import React from 'react'
 import { useCollectionSubscribe } from '../../hooks/useCollectionSubscribe'
-import { Person } from '../../types/types'
+import { WorkOrder, WorkOrderItem } from '../../types/types'
 import { db } from '../../utils/firebase'
+
+const columns: (keyof WorkOrder)[] = ['created', 'person', 'status', 'notes', 'location', 'items']
 
 const useStyles = makeStyles({
   root: {
@@ -22,12 +24,21 @@ const useStyles = makeStyles({
   },
 })
 
-const columns: (keyof Person)[] = ['name', 'phoneNumber', 'id']
-
-export default function AllPeople() {
+export default function WorkOrders() {
   const classes = useStyles()
-
+  const workOrders = useCollectionSubscribe(db.workOrdersCollection())
   const people = useCollectionSubscribe(db.peopleCollection())
+  const items = useCollectionSubscribe(db.itemsCollection())
+
+  const makeItem = (workOrderItem: WorkOrderItem, key: string) => {
+    const item = items.find((i) => i.id === workOrderItem.itemRef.id)
+    if (!item) return null
+    return (
+      <li key={item?.id + key}>
+        {item.name}: {workOrderItem.quantity}
+      </li>
+    )
+  }
 
   return (
     <Paper className={classes.root}>
@@ -41,13 +52,17 @@ export default function AllPeople() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {people.map((person) => {
+            {workOrders.map((row) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={person.name}>
-                  {columns.map((column) => {
-                    const value = person[column]
-                    return <TableCell key={column}>{value}</TableCell>
-                  })}
+                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                  <TableCell>{row.created.toDate().toLocaleDateString()}</TableCell>
+                  <TableCell>{people.find((p) => p.id === row.person.id)?.name}</TableCell>
+                  <TableCell>{row.status}</TableCell>
+                  <TableCell>{row.notes}</TableCell>
+                  <TableCell>{`Lat: ${row.location.latitude}, Lon: ${row.location.longitude}`}</TableCell>
+                  <TableCell>
+                    <ul>{row.items.map((item) => makeItem(item, row.id))}</ul>
+                  </TableCell>
                 </TableRow>
               )
             })}
