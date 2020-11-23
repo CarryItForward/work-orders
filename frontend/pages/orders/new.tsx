@@ -5,11 +5,19 @@ import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Grid from '@material-ui/core/Grid'
 import Divider from '@material-ui/core/Divider'
+import Paper from '@material-ui/core/Paper'
+import IconButton from '@material-ui/core/IconButton'
+import DeleteIcon from '@material-ui/icons/Delete'
 import { makeStyles } from '@material-ui/core/styles'
+import { useCollectionSubscribe } from '../../hooks/useCollectionSubscribe'
+import { Item } from '../../types/types'
+import { db } from '../../utils/firebase'
+
+const filter = createFilterOptions()
 
 const useStyles = makeStyles({
   root: {
@@ -31,12 +39,53 @@ const useStyles = makeStyles({
   divider: {
     marginTop: 10,
     marginBottom: 10,
-  }
+  },
+  selectedItem: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: 10,
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  itemName: {
+    marginLeft: 15,
+  },
+  itemQuantity: {
+    marginLeft: 'auto',
+    width: 120,
+  },
+  deleteIcon: {
+    marginLeft: 15,
+  },
 });
+
+function SelectedItem({ name, quantity, onQuantityChange, onDiscard }) {
+  const classes = useStyles();
+
+  return (
+    <Paper className={classes.selectedItem}>
+      <Typography className={classes.itemName}>{name}</Typography>
+      <TextField
+        className={classes.itemQuantity}
+        label="Quantity"
+        type="number"
+        variant="outlined"
+        value={quantity}
+        InputProps={{
+          inputProps: { min: 1, max: 100 },
+        }}
+      />
+      <IconButton className={classes.deleteIcon} onClick={onDiscard}>
+        <DeleteIcon />
+      </IconButton>
+    </Paper>
+  )
+}
 
 export default function NewOrder() {
   const [userType, setUserType] = useState('existing')
   const [selectedUser, setSelectedUser] = useState(null)
+  const [selectedItems, setSelectedItems] = useState([])
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
 
@@ -44,31 +93,21 @@ export default function NewOrder() {
 
   useEffect(() => {
     setName(selectedUser ? selectedUser.name : '')
-    setPhone(selectedUser ? selectedUser.phone : '')
+    setPhone(selectedUser ? selectedUser.phoneNumber : '')
   }, [selectedUser])
 
   useEffect(() => {
     if (userType === 'existing' && selectedUser) {
       setName(selectedUser.name)
-      setPhone(selectedUser.phone)
+      setPhone(selectedUser.phoneNumber)
     } else {
       setName('')
       setPhone('')
     }
   }, [userType])
 
-  const people = [
-    { name: 'Leslie Knope', phone: '541-000-000' },
-    { name: 'Ron Swanson', phone: '541-111-1111' },
-    { name: 'Ann Perkins', phone: '541-222-2222' },
-    { name: 'Tom Haverford', phone: '541-333-3333' },
-    { name: 'Mark Brendanawicz', phone: '541-444-4444' },
-    { name: 'April Ludgate', phone: '541-555-5555' },
-    { name: 'Ben Wyatt', phone: '541-666-6666' },
-    { name: 'Jerry Gergich', phone: '541-777-7777' },
-    { name: 'Chris Traeger', phone: '541-888-8888' },
-    { name: 'Andy Dwyer', phone: '541-999-9999' },
-  ].sort((a, b) => a.name > b.name ? 1 : -1)
+  const people = useCollectionSubscribe(db.peopleCollection())
+  const items = useCollectionSubscribe(db.itemsCollection())
 
   return (
     <>
@@ -99,23 +138,13 @@ export default function NewOrder() {
             />
 
             {selectedUser && (
-              <>
-                <TextField
-                  className={classes.input}
-                  required
-                  label="Name"
-                  variant="outlined"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                />
-                <TextField
-                  className={classes.input}
-                  label="Phone Number"
-                  variant="outlined"
-                  value={phone}
-                  onChange={(event) => setPhone(event.target.value)}
-                />
-              </>
+              <TextField
+                className={classes.input}
+                label="Phone Number"
+                variant="outlined"
+                value={phone}
+                onChange={(event) => setPhone(event.target.value)}
+              />
             )}
           </>
         ) : (
@@ -140,29 +169,42 @@ export default function NewOrder() {
 
         <Divider className={classes.divider} />
 
-        <TextField
+        <Autocomplete
+          key={selectedItems.length}
           className={classes.input}
-          label="Meeting Location"
-          variant="outlined"
-          value={phone}
-          onChange={(event) => setPhone(event.target.value)}
+          options={items}
+          getOptionSelected={(option, value) => option.name === value.name}
+          getOptionLabel={(option) => option.filterName || option.name}
+          onChange={(event, value) => setSelectedItems([value, ...selectedItems])}
+          renderInput={(params) => <TextField {...params} label="Item" variant="outlined" />}
+          filterOptions={(options, params) => {
+            const filtered = filter(options, params)
+
+            if (params.inputValue !== '' && !filtered.find((i: Item) => i.name === params.inputValue)) {
+              filtered.push({
+                filterName: `Add "${params.inputValue}"`,
+                cost: 0,
+                name: params.inputValue,
+                id: `add ${params.inputValue}`,
+              })
+            }
+
+            return filtered.filter((i: Item) => !selectedItems.find(n => i.name === n.name)) as Item[]
+          }}
         />
 
-        <TextField
-          className={classes.input}
-          label="Meeting Location"
-          variant="outlined"
-          value={phone}
-          onChange={(event) => setPhone(event.target.value)}
-        />
-
-        <TextField
-          className={classes.input}
-          label="Meeting Location"
-          variant="outlined"
-          value={phone}
-          onChange={(event) => setPhone(event.target.value)}
-        />
+        {selectedItems.map((i, idx) =>
+          <SelectedItem
+            key={idx}
+            name={i.name}
+            quantity={4}
+            onQuantityChange={() => {}}
+            onDiscard={() => {
+              selectedItems.splice(idx, 1)
+              setSelectedItems([...selectedItems])
+            }}
+          />
+        )}
 
         <Divider className={classes.divider} />
 
@@ -170,8 +212,6 @@ export default function NewOrder() {
           className={classes.input}
           label="Meeting Location"
           variant="outlined"
-          value={phone}
-          onChange={(event) => setPhone(event.target.value)}
         />
 
         <TextField

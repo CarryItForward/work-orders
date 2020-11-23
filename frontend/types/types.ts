@@ -1,7 +1,6 @@
 import firebase from 'firebase/app'
 
 export interface Person {
-  image: string
   name: string
   phoneNumber: string
   id: string
@@ -27,4 +26,5 @@ export interface Item {
   cost: number
   image: string
   name: string
+  filterName?: string
 }

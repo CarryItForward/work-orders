@@ -13,14 +13,12 @@ export const db = {
           return {
             name: data.name,
             phoneNumber: data['phone_number'],
-            image: data.image,
             id: snapshot.id,
           }
         },
         toFirestore: (person: Person) => ({
           name: person.name,
           phone_number: person.phoneNumber,
-          image: person.image,
         }),
       })
   },
@@ -32,7 +30,6 @@ export const db = {
       .withConverter({
         fromFirestore: (snapshot, options): WorkOrder => {
           const data = snapshot.data(options)
-          console.log({ data })
           return {
             id: snapshot.id,
             created: data.created,

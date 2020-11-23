@@ -22,13 +22,12 @@ const useStyles = makeStyles({
   },
 })
 
-const columns: (keyof Person)[] = ['name', 'phoneNumber', 'image']
+const columns: (keyof Person)[] = ['name', 'phoneNumber', 'id']
 
 export default function AllPeople() {
   const classes = useStyles()
 
   const people = useCollectionSubscribe(db.peopleCollection())
-  console.log({ people })
 
   return (
     <Paper className={classes.root}>
