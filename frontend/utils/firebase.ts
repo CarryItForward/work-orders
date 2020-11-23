@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import { Person } from '../types/types'
+import { Person, Item } from '../types/types'
+
 export const db = {
   /** People */
   peopleCollection: () => {
@@ -13,7 +14,6 @@ export const db = {
           const person: Person = {
             name: data.name,
             phoneNumber: data['phone_number'],
-            image: data.image,
             id: snapshot.id,
           }
           return person
@@ -21,8 +21,25 @@ export const db = {
         toFirestore: (person: Person) => ({
           name: person.name,
           phone_number: person.phoneNumber,
-          image: person.image,
         }),
+      })
+  },
+  itemsCollection: () => {
+    return firebase
+      .firestore()
+      .collection('items')
+      .withConverter({
+        fromFirestore: (snapshot, options): Item => {
+          const data = snapshot.data(options)
+          const item: Item = {
+            name: data.name,
+            id: snapshot.id
+          }
+          return item
+        },
+        toFirestore: (item: Item) => ({
+          name: item.name,
+        })
       })
   },
 }
