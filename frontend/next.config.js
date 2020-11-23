@@ -3,19 +3,21 @@ const path = require('path')
 
 module.exports = withPWA({
   webpack(config, options) {
-    config.module.rules.push({
-      test: /\.(png|jpg|gif|eot|ttf|woff|woff2)$/,
-      use: {
-        loader: 'url-loader',
-        options: {
-          limit: 100000
-        }
+    config.module.rules.push(
+      {
+        test: /\.(png|jpg|gif|eot|ttf|woff|woff2)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 100000,
+          },
+        },
+      },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
       }
-    },
-    {
-      test: /\.svg$/,
-      use: ['@svgr/webpack'],
-    })
+    )
 
     config.resolve.alias['~'] = path.resolve(__dirname)
 
@@ -24,5 +26,5 @@ module.exports = withPWA({
   pwa: {
     dest: 'public',
   },
-  exportTrailingSlash: true,
+  trailingSlash: true,
 })
