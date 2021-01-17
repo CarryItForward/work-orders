@@ -19,7 +19,8 @@ export const useCollectionSubscribe = <T>(collection: firebase.firestore.Query<T
       unsub()
       active = false
     }
-  }, [collection])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return current
 }
@@ -40,6 +41,7 @@ export const useDocSubscribe = <T>(doc: firebase.firestore.DocumentReference<T>)
       unsub()
       active = false
     }
-  }, [doc])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return current
 }
