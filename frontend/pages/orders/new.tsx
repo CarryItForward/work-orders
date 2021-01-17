@@ -143,7 +143,7 @@ export default function NewOrder() {
                 label="Phone Number"
                 variant="outlined"
                 value={phone}
-                onChange={(event) => setPhone(event.target.value)}
+                disabled
               />
             )}
           </>
