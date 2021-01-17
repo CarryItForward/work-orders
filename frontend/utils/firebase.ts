@@ -30,16 +30,9 @@ export const db = {
       .withConverter({
         fromFirestore: (snapshot, options): WorkOrder => {
           const data = snapshot.data(options)
-          return {
-            id: snapshot.id,
-            created: data.created,
-            location: data.location,
-            status: data.status,
-            notes: data.notes,
-            person: data.person,
-            items: data.items,
-          }
+          return new WorkOrder(snapshot.id, data);
         },
+        // @ts-ignore
         toFirestore: (workOrder: WorkOrder) => ({
           created: workOrder.created,
           location: workOrder.location,
@@ -58,12 +51,7 @@ export const db = {
       .withConverter({
         fromFirestore: (snapshot, options): Item => {
           const data = snapshot.data(options)
-          return {
-            id: snapshot.id,
-            cost: data.cost,
-            name: data.name,
-            image: data.image,
-          }
+          return new Item(snapshot.id, data);
         },
         toFirestore: (item: Item) => ({
           cost: item.cost,
