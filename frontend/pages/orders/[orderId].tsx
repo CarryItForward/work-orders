@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     margin: '10px auto',
     width: '50%',
     minWidth: 275,
-    height: 'calc(100vh - 84px)'
+    height: 'calc(100vh - 84px)',
   },
   pageHeader: {
     textAlign: 'center',
@@ -55,10 +55,10 @@ const useStyles = makeStyles({
   deleteIcon: {
     marginLeft: 15,
   },
-});
+})
 
 function SelectedItem({ name, quantity, onQuantityChange, onDiscard }) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Paper className={classes.selectedItem}>
@@ -81,8 +81,8 @@ function SelectedItem({ name, quantity, onQuantityChange, onDiscard }) {
 }
 
 export default function ViewOrder() {
-  const router = useRouter();
-  const { orderId } = router.query;
+  const router = useRouter()
+  const { orderId } = router.query
 
   const [order, setOrder] = useState(null)
   const [selectedUser, setSelectedUser] = useState(null)
@@ -90,7 +90,7 @@ export default function ViewOrder() {
   const [location, setLocation] = useState('')
   const [notes, setNotes] = useState('')
 
-  const classes = useStyles();
+  const classes = useStyles()
 
   useEffect(() => {
     async function getOrder(orderId: string) {
@@ -105,11 +105,11 @@ export default function ViewOrder() {
       setNotes(order.notes)
     }
 
-    getOrder(orderId as string);
+    getOrder(orderId as string)
   }, [orderId])
 
   const people = useCollectionSubscribe(db.peopleCollection())
-  const items = useCollectionSubscribe(db.itemsCollection()).map(i => i.toWorkOrderItem())
+  const items = useCollectionSubscribe(db.itemsCollection()).map((i) => i.toWorkOrderItem())
 
   // TODO: switch to a <Loading /> component
   if (!order) return 'Loading...'
@@ -158,7 +158,10 @@ export default function ViewOrder() {
           filterOptions={(options, params) => {
             const filtered = filter(options, params)
 
-            if (params.inputValue !== '' && !filtered.find((i: WorkOrderItem) => i.item.name === params.inputValue)) {
+            if (
+              params.inputValue !== '' &&
+              !filtered.find((i: WorkOrderItem) => i.item.name === params.inputValue)
+            ) {
               filtered.push({
                 filterName: `Add "${params.inputValue}"`,
                 cost: 0,
@@ -167,11 +170,13 @@ export default function ViewOrder() {
               })
             }
 
-            return filtered.filter((i: WorkOrderItem) => !selectedItems.find(n => i.item.name === n.item.name)) as WorkOrderItem[]
+            return filtered.filter(
+              (i: WorkOrderItem) => !selectedItems.find((n) => i.item.name === n.item.name)
+            ) as WorkOrderItem[]
           }}
         />
 
-        {selectedItems.map((i, idx) =>
+        {selectedItems.map((i, idx) => (
           <SelectedItem
             key={idx}
             name={i.item.name}
@@ -182,7 +187,7 @@ export default function ViewOrder() {
               setSelectedItems([...selectedItems])
             }}
           />
-        )}
+        ))}
 
         <Divider className={classes.divider} />
 
@@ -205,5 +210,5 @@ export default function ViewOrder() {
         />
       </Grid>
     </>
-  );
+  )
 }

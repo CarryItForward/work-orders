@@ -30,9 +30,8 @@ export const db = {
       .withConverter({
         fromFirestore: (snapshot, options): WorkOrder => {
           const data = snapshot.data(options)
-          return new WorkOrder(snapshot.id, data);
+          return new WorkOrder(snapshot.id, data)
         },
-        // @ts-ignore
         toFirestore: (workOrder: WorkOrder) => ({
           created: workOrder.created,
           location: workOrder.location,

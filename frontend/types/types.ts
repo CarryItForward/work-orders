@@ -18,24 +18,22 @@ export class WorkOrder {
   notes: string
 
   constructor(id: string, data: any) {
-    this.id = id;
-    this.location = data.location;
-    this.personRef = data.person;
-    this.status = data.status;
-    this.created = data.created;
-    this.items = data.items;
-    this.notes = data.notes;
+    this.id = id
+    this.location = data.location
+    this.personRef = data.person
+    this.status = data.status
+    this.created = data.created
+    this.items = data.items
+    this.notes = data.notes
   }
 
   async populate() {
     this.person = (await this.personRef.get()).data()
     this.items = await Promise.all(
-      this.items.map(
-        async workOrderItem => ({
-          ...workOrderItem,
-          item: (await workOrderItem.itemRef.get()).data()
-        })
-      )
+      this.items.map(async (workOrderItem) => ({
+        ...workOrderItem,
+        item: (await workOrderItem.itemRef.get()).data(),
+      }))
     )
 
     return this
@@ -56,11 +54,11 @@ export class Item {
   filterName?: string
 
   constructor(id: string, data: any) {
-    this.id = id;
-    this.cost = data.cost;
-    this.image = data.image;
-    this.name = data.name;
-    this.filterName = data.filterName;
+    this.id = id
+    this.cost = data.cost
+    this.image = data.image
+    this.name = data.name
+    this.filterName = data.filterName
   }
 
   toWorkOrderItem(quantity = 0) {
