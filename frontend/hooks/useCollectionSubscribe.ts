@@ -8,7 +8,7 @@ export const useCollectionSubscribe = <T>(collection: firebase.firestore.Query<T
 
   React.useEffect(() => {
     let active = true
-    console.log(`new subscription`)
+    console.log(`new collection subscription`)
     const unsub = collection.onSnapshot((snapshot) => {
       if (active) {
         setCurrent(snapshot.docs.map((doc) => doc.data()))
@@ -19,7 +19,27 @@ export const useCollectionSubscribe = <T>(collection: firebase.firestore.Query<T
       unsub()
       active = false
     }
-  }, [])
+  }, [collection])
 
+  return current
+}
+
+export const useDocSubscribe = <T>(doc: firebase.firestore.DocumentReference<T>) => {
+  const [current, setCurrent] = React.useState<T>()
+
+  React.useEffect(() => {
+    let active = true
+    console.log(`new doc subscription`)
+    const unsub = doc.onSnapshot((snapshot) => {
+      if (active) {
+        setCurrent(snapshot.data())
+      }
+    })
+
+    return () => {
+      unsub()
+      active = false
+    }
+  }, [doc])
   return current
 }
