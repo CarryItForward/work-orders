@@ -1,3 +1,4 @@
+import { Link } from '@material-ui/core'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
@@ -6,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import NextLink from 'next/link'
 import React from 'react'
 import { useCollectionSubscribe } from '../../hooks/useCollectionSubscribe'
 import { Person } from '../../types/types'
@@ -28,7 +30,7 @@ export default function AllPeople() {
   const classes = useStyles()
 
   const people = useCollectionSubscribe(db.peopleCollection())
-
+  console.log('chicken')
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
@@ -46,7 +48,18 @@ export default function AllPeople() {
                 <TableRow hover role="checkbox" tabIndex={-1} key={person.name}>
                   {columns.map((column) => {
                     const value = person[column]
-                    return <TableCell key={column}>{value}</TableCell>
+                    console.log(column)
+                    return (
+                      <TableCell key={column}>
+                        {column === 'name' ? (
+                          <Link component={NextLink} href={`/people/${person.id}`}>
+                            {value}
+                          </Link>
+                        ) : (
+                          value
+                        )}
+                      </TableCell>
+                    )
                   })}
                 </TableRow>
               )
